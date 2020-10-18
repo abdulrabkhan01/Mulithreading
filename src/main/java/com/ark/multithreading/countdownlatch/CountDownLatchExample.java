@@ -10,12 +10,17 @@ public class CountDownLatchExample {
         Runnable task1 = () -> { latch.countDown();
             System.out.println("Task 1 is completed");
         };
-        Runnable taks2 = () -> {latch.countDown();
+        Runnable task2 = () -> {
         for(int i =0; i< 100; i++) {
             System.out.println("Tasks 2 is processing data "+i);
         }
             System.out.println("Task 2 is completed");
+            latch.countDown();
         };
+        Thread t1 = new Thread(task1);
+        Thread t2 = new Thread(task2);
+        t1.start();
+        t2.start();
         try {
             System.out.println("Main thread is waiting for all tasks to be completed");
             latch.await();
